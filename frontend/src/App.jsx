@@ -34,24 +34,33 @@ export default function App() {
   if (!authed) {
     return (
       <div className="login-container">
-        <h1>🔒 Вход</h1>
-        <form onSubmit={handleLogin} className="login-form">
-          <input
-            type="password"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Введите пароль"
-          />
-          <button type="submit">Войти</button>
-        </form>
-        {error && <p className="login-error">{error}</p>}
+        <div className="login-box">
+          <h1>👋 Привет!</h1>
+          <p>Введи пароль чтобы войти</p>
+          <form className="login-form" onSubmit={handleLogin}>
+            <input
+              type="password"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Пароль"
+              autoFocus
+            />
+            <button type="submit">Войти</button>
+          </form>
+          {error && <p className="login-error">{error}</p>}
+        </div>
       </div>
     );
   }
 
+  const today = new Date().toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+
   return (
     <div className="app-container">
-      <h1>📝 My Tasks</h1>
+      <div className="app-header">
+        <h1>Мои задачи ✨</h1>
+        <p>{today}</p>
+      </div>
       <TaskForm fetchTasks={fetchTasks} />
       <TaskList tasks={tasks} fetchTasks={fetchTasks} />
     </div>

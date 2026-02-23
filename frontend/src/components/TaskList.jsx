@@ -6,15 +6,20 @@ export default function TaskList({ tasks, fetchTasks }) {
 
   return (
     <div>
-      <div className="task-list">
-        {daily.map((task) => (
-          <TaskCard key={task.id} task={task} fetchTasks={fetchTasks} />
-        ))}
-      </div>
+      {daily.length > 0 && (
+        <>
+          <p className="section-title">Ежедневные</p>
+          <div className="task-list">
+            {daily.map((task) => (
+              <TaskCard key={task.id} task={task} fetchTasks={fetchTasks} />
+            ))}
+          </div>
+        </>
+      )}
 
       {weekly.length > 0 && (
         <div className="weekly-section">
-          <h2>📅 Недельные</h2>
+          <p className="section-title">Недельные</p>
           <div className="task-list">
             {weekly.map((task) => (
               <TaskCard key={task.id} task={task} fetchTasks={fetchTasks} />
