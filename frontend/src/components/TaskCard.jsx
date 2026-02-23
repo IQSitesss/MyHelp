@@ -1,6 +1,8 @@
+const API_URL = 'https://myhelp.onrender.com/api/tasks';
+
 export default function TaskCard({ task, fetchTasks }) {
   const toggleComplete = async () => {
-    await fetch(`/api/tasks/${task.id}`, {
+    await fetch(`${API_URL}/${task.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ completed: !task.completed })
@@ -9,7 +11,7 @@ export default function TaskCard({ task, fetchTasks }) {
   };
 
   const deleteTask = async () => {
-    await fetch(`/api/tasks/${task.id}`, {
+    await fetch(`${API_URL}/${task.id}`, {
       method: 'DELETE'
     });
     fetchTasks();
@@ -18,7 +20,7 @@ export default function TaskCard({ task, fetchTasks }) {
   const editTask = async () => {
     const newTitle = prompt('Изменить задачу:', task.title);
     if (newTitle === null || newTitle.trim() === '') return;
-    await fetch(`/api/tasks/${task.id}`, {
+    await fetch(`${API_URL}/${task.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: newTitle.trim() })
