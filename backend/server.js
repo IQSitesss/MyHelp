@@ -7,7 +7,10 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: 'https://myhelp-frontend.onrender.com'
+  origin: [
+    'https://myhelp-1.onrender.com',
+    'https://myhelp-frontend.onrender.com'
+  ]
 }));
 
 app.use(express.json());
