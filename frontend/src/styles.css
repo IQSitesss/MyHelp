@@ -26,7 +26,6 @@ body::before {
   pointer-events: none;
 }
 
-/* ЛОГИН */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
@@ -36,11 +35,6 @@ body::before {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-8px); }
   75% { transform: translateX(8px); }
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes popIn {
@@ -54,6 +48,7 @@ body::before {
   100% { transform: scale(1); }
 }
 
+/* ЛОГИН */
 .login-container {
   position: relative;
   z-index: 1;
@@ -134,7 +129,6 @@ body::before {
 
 .login-form button:active {
   transform: scale(0.96);
-  box-shadow: 0 2px 10px rgba(165, 180, 252, 0.3);
 }
 
 .login-error {
@@ -192,7 +186,6 @@ body::before {
   font-family: 'Nunito', sans-serif;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
-  backdrop-filter: blur(10px);
 }
 
 .task-form input::placeholder {
@@ -214,11 +207,6 @@ body::before {
   font-family: 'Nunito', sans-serif;
   outline: none;
   cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.task-form select:focus {
-  border-color: #a5b4fc;
 }
 
 .task-form button {
@@ -230,9 +218,8 @@ body::before {
   font-size: 20px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform 0.15s;
   box-shadow: 0 4px 16px rgba(165, 180, 252, 0.35);
-  white-space: nowrap;
 }
 
 .task-form button:active {
@@ -261,21 +248,14 @@ body::before {
 }
 
 .task-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
   background: rgba(255, 255, 255, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.95);
-  padding: 14px 14px;
   border-radius: 20px;
   box-shadow: 0 2px 12px rgba(149, 157, 220, 0.12);
   backdrop-filter: blur(10px);
-  transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
+  transition: opacity 0.3s;
   animation: popIn 0.3s ease both;
-}
-
-.task-card:active {
-  transform: scale(0.98);
+  overflow: hidden;
 }
 
 .task-card.completed {
@@ -285,6 +265,13 @@ body::before {
 .task-card.completed .task-info strong {
   text-decoration: line-through;
   color: #9ca3af;
+}
+
+.task-card-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
 }
 
 /* ЧЕКБОКС */
@@ -330,16 +317,20 @@ body::before {
   font-weight: 600;
   color: #2d2d3a;
   display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   transition: color 0.2s;
 }
 
+.task-info strong.truncated {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .task-info p {
-  margin: 3px 0 0;
+  margin: 4px 0 0;
   font-size: 13px;
   color: #9ca3af;
+  line-height: 1.5;
 }
 
 /* КНОПКИ */
@@ -350,11 +341,19 @@ body::before {
   cursor: pointer;
   padding: 4px;
   border-radius: 8px;
-  transition: transform 0.15s, background 0.15s;
+  transition: transform 0.15s;
   flex-shrink: 0;
 }
 
 .task-card button:active {
   transform: scale(0.85);
-  background: rgba(0,0,0,0.05);
+}
+
+.expand-btn {
+  font-size: 11px !important;
+  color: #a5b4fc;
+  font-weight: 700;
+  padding: 2px 6px !important;
+  border-radius: 8px !important;
+  background: rgba(165, 180, 252, 0.1) !important;
 }
