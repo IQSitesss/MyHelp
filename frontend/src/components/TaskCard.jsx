@@ -17,15 +17,14 @@ export default function TaskCard({ task, fetchTasks }) {
     fetchTasks();
   };
 
- const handleDeleteClick = async () => {
-  if (!confirmDelete) {
-    setConfirmDelete(true);
-    return;
-  }
-
-  await fetch(`${API_URL}/${task.id}`, { method: 'DELETE' });
-  fetchTasks();
-};
+  const handleDeleteClick = () => {
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      setTimeout(() => setConfirmDelete(false), 3000);
+    } else {
+      fetch(`${API_URL}/${task.id}`, { method: 'DELETE' }).then(fetchTasks);
+    }
+  };
 
   const editTask = async () => {
     const newTitle = prompt('Изменить задачу:', task.title);
