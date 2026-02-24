@@ -55,14 +55,25 @@ export default function App() {
 
   const today = new Date().toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
 
+  const dailyTasks = tasks.filter(t => t.type === 'daily');
+  const weeklyTasks = tasks.filter(t => t.type === 'weekly');
+
   return (
     <div className="app-container">
       <div className="app-header">
         <h1>Мои задачи ✨</h1>
         <p>{today}</p>
       </div>
+
       <TaskForm fetchTasks={fetchTasks} />
-      <TaskList tasks={tasks} fetchTasks={fetchTasks} />
+
+      <p className="section-title">📅 Ежедневные</p>
+      <TaskList tasks={dailyTasks} fetchTasks={fetchTasks} />
+
+      <div className="weekly-section">
+        <p className="section-title">📆 Еженедельные</p>
+        <TaskList tasks={weeklyTasks} fetchTasks={fetchTasks} />
+      </div>
     </div>
   );
 }
