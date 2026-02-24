@@ -127,7 +127,7 @@ export default function BusWidget() {
       </div>
 
       <div style={styles.directionLabel}>
-        {goingBack ? "← Обратно домой" : "→ На стадион / работу"}
+        {goingBack ? "← Обратно домой" : "→ Поездка в город"}
       </div>
 
       <BusLine
