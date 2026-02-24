@@ -4,6 +4,7 @@ const API_URL = 'https://myhelp.onrender.com/api/tasks';
 
 export default function TaskCard({ task, fetchTasks }) {
   const [expanded, setExpanded] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const isLong = task.title.length > 28;
 
@@ -16,11 +17,13 @@ export default function TaskCard({ task, fetchTasks }) {
     fetchTasks();
   };
 
-  const deleteTask = async () => {
-    await fetch(`${API_URL}/${task.id}`, {
-      method: 'DELETE'
-    });
-    fetchTasks();
+  const handleDeleteClick = () => {
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      setTimeout(() => setConfirmDelete(false), 3000);
+    } else {
+      fetch(`${API_URL}/${task.id}`, { method: 'DELETE' }).then(fetchTasks);
+    }
   };
 
   const editTask = async () => {
@@ -45,7 +48,12 @@ export default function TaskCard({ task, fetchTasks }) {
           {task.description && expanded && <p>{task.description}</p>}
         </div>
         {!task.completed && <button onClick={editTask}>⚙️</button>}
-        <button onClick={deleteTask}>❌</button>
+        <button
+          onClick={handleDeleteClick}
+          style={confirmDelete ? { fontSize: '12px', color: '#f87171', fontWeight: 700 } : {}}
+        >
+          {confirmDelete ? 'Удалить?' : '❌'}
+        </button>
         {isLong && (
           <button className="expand-btn" onClick={() => setExpanded(!expanded)}>
             {expanded ? '▲' : '▼'}
