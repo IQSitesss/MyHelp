@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import TaskList from './components/TaskList.jsx';
 import TaskForm from './components/TaskForm.jsx';
+import BusWidget from './components/BusWidget.jsx';
 
 const API_URL = 'https://myhelp.onrender.com/api/tasks';
 const PASSWORD = import.meta.env.VITE_PASSWORD;
@@ -68,6 +69,9 @@ export default function App() {
         <h1>Мои задачи ✨</h1>
         <p>{today}</p>
       </div>
+
+<BusWidget />
+<TaskForm fetchTasks={fetchTasks} />
 
       <TaskForm fetchTasks={fetchTasks} />
 
