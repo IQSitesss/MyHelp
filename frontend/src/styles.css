@@ -444,8 +444,8 @@ body::before {
 }
 
 .edit-save {
-  background: linear-gradient(135deg, #a5b4fc, #f9a8d4);
-  color: white;
+  background: linear-gradient(135deg, #a5b4fc, #f9a8d4) !important;
+  color: white !important;
   box-shadow: 0 3px 10px rgba(165, 180, 252, 0.4);
 }
 
