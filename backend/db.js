@@ -1,15 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
+import { createClient } from '@libsql/client';
 
-export const db = await open({
-  filename: process.env.DATABASE_URL,
-  driver: sqlite3.Database
+export const db = createClient({
+  url: process.env.TURSO_DATABASE_URL,
+  authToken: process.env.TURSO_AUTH_TOKEN,
 });
 
-// Инициализация таблицы задач
-await db.exec(`
+await db.execute(`
   CREATE TABLE IF NOT EXISTS tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
