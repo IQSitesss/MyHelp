@@ -428,16 +428,40 @@ body::before {
 
 .edit-actions {
   display: flex;
-  gap: 6px;
+  gap: 8px;
+  margin-top: 2px;
 }
 
 .edit-save, .edit-cancel {
-  background: none;
-  border: none;
-  font-size: 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
-  padding: 2px 6px;
-  border-radius: 8px;
+  padding: 6px 14px;
+  border-radius: 12px;
+  border: none;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+
+.edit-save {
+  background: linear-gradient(135deg, #a5b4fc, #f9a8d4);
+  color: white;
+  box-shadow: 0 3px 10px rgba(165, 180, 252, 0.4);
+}
+
+.edit-save:active {
+  transform: scale(0.94);
+  box-shadow: 0 1px 4px rgba(165, 180, 252, 0.3);
+}
+
+.edit-cancel {
+  background: rgba(199, 210, 254, 0.2);
+  color: #9ca3af;
+  border: 1.5px solid rgba(199, 210, 254, 0.5);
+}
+
+.edit-cancel:active {
+  transform: scale(0.94);
 }
 
 /* ЗАКРЕП */

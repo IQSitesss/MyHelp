@@ -73,8 +73,8 @@ export default function TaskCard({ task, fetchTasks, token, pinned, onTogglePin 
                 autoFocus
               />
               <div className="edit-actions">
-                <button className="edit-save" onClick={saveEdit}>✅</button>
-                <button className="edit-cancel" onClick={cancelEdit}>✖</button>
+                <button className="edit-save" onClick={saveEdit}>Сохранить</button>
+                <button className="edit-cancel" onClick={cancelEdit}>Отмена</button>
               </div>
             </div>
           ) : (
