@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const API_URL = 'https://myhelp.onrender.com/api/tasks';
 
-export default function TaskForm({ fetchTasks }) {
+export default function TaskForm({ fetchTasks, token }) {
   const [title, setTitle] = useState('');
   const [type, setType] = useState('daily');
 
@@ -10,7 +10,10 @@ export default function TaskForm({ fetchTasks }) {
     e.preventDefault();
     await fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify({ title, type })
     });
     setTitle('');

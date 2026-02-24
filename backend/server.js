@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
 import tasksRoutes from './routes/tasks.js';
 
 dotenv.config();
@@ -14,6 +15,16 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// Логин — выдаём JWT токен
+app.post('/api/login', (req, res) => {
+  const { password } = req.body;
+  if (password !== process.env.APP_PASSWORD) {
+    return res.status(401).json({ error: 'Неверный пароль' });
+  }
+  const token = jwt.sign({ user: 'owner' }, process.env.SECRET_KEY, { expiresIn: '30d' });
+  res.json({ token });
+});
 
 app.use('/api/tasks', tasksRoutes);
 

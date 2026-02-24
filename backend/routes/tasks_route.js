@@ -1,9 +1,10 @@
 import express from 'express';
 import { getTasks, addTask, editTask, removeTask } from '../controllers/tasksController.js';
+import { authMiddleware } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// router.use(authMiddleware); // временно отключено
+router.use(authMiddleware); // ✅ включено
 
 router.get('/', getTasks);
 router.post('/', addTask);

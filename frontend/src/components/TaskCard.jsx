@@ -2,16 +2,21 @@ import { useState } from 'react';
 
 const API_URL = 'https://myhelp.onrender.com/api/tasks';
 
-export default function TaskCard({ task, fetchTasks }) {
+export default function TaskCard({ task, fetchTasks, token }) {
   const [expanded, setExpanded] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const isLong = task.title.length > 28;
 
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`
+  };
+
   const toggleComplete = async () => {
     await fetch(`${API_URL}/${task.id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ completed: !task.completed })
     });
     fetchTasks();
@@ -22,7 +27,7 @@ export default function TaskCard({ task, fetchTasks }) {
       setConfirmDelete(true);
       setTimeout(() => setConfirmDelete(false), 3000);
     } else {
-      fetch(`${API_URL}/${task.id}`, { method: 'DELETE' }).then(fetchTasks);
+      fetch(`${API_URL}/${task.id}`, { method: 'DELETE', headers }).then(fetchTasks);
     }
   };
 
@@ -31,7 +36,7 @@ export default function TaskCard({ task, fetchTasks }) {
     if (newTitle === null || newTitle.trim() === '') return;
     await fetch(`${API_URL}/${task.id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ title: newTitle.trim() })
     });
     fetchTasks();
@@ -42,9 +47,7 @@ export default function TaskCard({ task, fetchTasks }) {
       <div className="task-card-main">
         <input type="checkbox" checked={!!task.completed} onChange={toggleComplete} />
         <div className="task-info">
-          <strong className={!expanded && isLong ? 'truncated' : ''}>
-            {task.title}
-          </strong>
+          <strong className={!expanded && isLong ? 'truncated' : ''}>{task.title}</strong>
           {task.description && expanded && <p>{task.description}</p>}
         </div>
         {!task.completed && <button onClick={editTask}>⚙️</button>}
