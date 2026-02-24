@@ -10,7 +10,9 @@ const app = express();
 app.use(cors({
   origin: [
     'https://myhelp-1.onrender.com',
-    'https://myhelp-frontend.onrender.com'
+    'https://myhelp-frontend.onrender.com',
+    'https://mytaskshelp.online',
+    'https://www.mytaskshelp.online',
   ]
 }));
 
