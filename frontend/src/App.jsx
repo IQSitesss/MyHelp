@@ -70,9 +70,6 @@ export default function App() {
         <p>{today}</p>
       </div>
 
-<BusWidget />
-<TaskForm fetchTasks={fetchTasks} />
-
       <TaskForm fetchTasks={fetchTasks} />
 
       <div className="progress-section">
@@ -96,6 +93,8 @@ export default function App() {
         <p className="section-title">📆 Еженедельные</p>
         <TaskList tasks={weeklyTasks} fetchTasks={fetchTasks} />
       </div>
+
+      <BusWidget />
     </div>
   );
 }

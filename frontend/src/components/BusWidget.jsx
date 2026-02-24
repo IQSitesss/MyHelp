@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 
-// Расписание Linia 120 — остановка Primaria Vulcan
 const LINE_120 = {
   weekday: [
     [5, 33], [6, 45], [7, 57], [11, 9], [12, 21], [13, 33],
@@ -11,7 +10,6 @@ const LINE_120 = {
   ]
 };
 
-// Расписание Linia 9 — остановка Stad. Municipal
 const LINE_9 = {
   weekday: [
     [6, 0], [6, 15], [6, 30], [6, 45],
@@ -88,7 +86,6 @@ export default function BusWidget() {
   const isWeekend = now.getDay() === 0 || now.getDay() === 6;
   const next120 = getNextDepartures(LINE_120, now);
   const next9 = getNextDepartures(LINE_9, now);
-
   const timeStr = now.toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" });
 
   return (
@@ -96,9 +93,9 @@ export default function BusWidget() {
       <div style={styles.header}>
         <span style={styles.busIcon}>🚌</span>
         <div>
-          <div style={styles.title}>Autobuz</div>
+          <div style={styles.title}>Автобус</div>
           <div style={styles.subtitle}>
-            {isWeekend ? "Sâmbătă · Duminică" : "Luni · Vineri"} · acum {timeStr}
+            {isWeekend ? "Суббота · Воскресенье" : "Пн · Пт"} · сейчас {timeStr}
           </div>
         </div>
       </div>
@@ -120,10 +117,6 @@ export default function BusWidget() {
         departures={next9}
         from="Stad. Municipal"
       />
-
-      {next120.length === 0 && next9.length === 0 && (
-        <div style={styles.noMore}>Nu mai sunt autobuze azi 🌙</div>
-      )}
     </div>
   );
 }
@@ -135,12 +128,12 @@ function BusLine({ number, color, direction, departures, from }) {
         <span style={{ ...styles.badge, background: color }}>{number}</span>
         <div>
           <div style={styles.lineDirection}>{direction}</div>
-          <div style={styles.lineFrom}>de la {from}</div>
+          <div style={styles.lineFrom}>от {from}</div>
         </div>
       </div>
 
       {departures.length === 0 ? (
-        <div style={styles.noMore}>Nu mai sunt autobuze azi</div>
+        <div style={styles.noMore}>Автобусов больше нет сегодня 🌙</div>
       ) : (
         <div style={styles.departures}>
           {departures.map((d, i) => (
@@ -151,7 +144,7 @@ function BusLine({ number, color, direction, departures, from }) {
               <span style={styles.depDiff}>
                 {i === 0 ? (
                   <span style={{ ...styles.pill, background: color + "22", color }}>
-                    ⏱ {formatDiff(d.diff)}
+                    ⏱ через {formatDiff(d.diff)}
                   </span>
                 ) : (
                   <span style={styles.diffGray}>через {formatDiff(d.diff)}</span>
@@ -173,7 +166,7 @@ const styles = {
     boxShadow: "0 2px 12px rgba(149,157,220,0.12)",
     backdropFilter: "blur(10px)",
     padding: "16px",
-    marginBottom: 24,
+    marginTop: 32,
     fontFamily: "'Nunito', sans-serif"
   },
   header: {
@@ -182,9 +175,7 @@ const styles = {
     gap: 10,
     marginBottom: 14
   },
-  busIcon: {
-    fontSize: 22
-  },
+  busIcon: { fontSize: 22 },
   title: {
     fontSize: 14,
     fontWeight: 800,
@@ -198,9 +189,7 @@ const styles = {
     fontWeight: 600,
     marginTop: 1
   },
-  lineBlock: {
-    marginBottom: 4
-  },
+  lineBlock: { marginBottom: 4 },
   lineHeader: {
     display: "flex",
     alignItems: "center",
@@ -239,9 +228,7 @@ const styles = {
     fontSize: 18,
     fontWeight: 800
   },
-  depDiff: {
-    fontSize: 12
-  },
+  depDiff: { fontSize: 12 },
   pill: {
     padding: "3px 10px",
     borderRadius: 99,
