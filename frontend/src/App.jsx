@@ -58,6 +58,10 @@ export default function App() {
   const dailyTasks = tasks.filter(t => t.type === 'daily');
   const weeklyTasks = tasks.filter(t => t.type === 'weekly');
 
+  const dailyProgress = dailyTasks.length === 0 ? 0 : Math.round(
+    (dailyTasks.filter(t => t.completed).length / dailyTasks.length) * 100
+  );
+
   return (
     <div className="app-container">
       <div className="app-header">
@@ -67,7 +71,21 @@ export default function App() {
 
       <TaskForm fetchTasks={fetchTasks} />
 
-      <p className="section-title">📅 Ежедневные</p>
+      <div className="progress-section">
+        <div className="progress-header">
+          <p className="section-title">📅 Ежедневные</p>
+          <span className="progress-count">
+            {dailyTasks.filter(t => t.completed).length} / {dailyTasks.length}
+          </span>
+        </div>
+        <div className="progress-bar-bg">
+          <div className="progress-bar-fill" style={{ width: `${dailyProgress}%` }} />
+          {dailyProgress === 100 && dailyTasks.length > 0 && (
+            <span className="progress-done">🎉</span>
+          )}
+        </div>
+      </div>
+
       <TaskList tasks={dailyTasks} fetchTasks={fetchTasks} />
 
       <div className="weekly-section">
