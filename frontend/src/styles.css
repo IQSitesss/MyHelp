@@ -404,3 +404,44 @@ body::before {
   border-radius: 8px !important;
   background: rgba(165, 180, 252, 0.1) !important;
 }
+
+/* РЕДАКТИРОВАНИЕ */
+.edit-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 2px solid #a5b4fc;
+  font-size: 14px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  outline: none;
+  background: rgba(255,255,255,0.9);
+  color: #2d2d3a;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.edit-save, .edit-cancel {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+/* ЗАКРЕП */
+.task-card.pinned {
+  border: 1.5px solid rgba(165, 180, 252, 0.6);
+  background: rgba(255, 255, 255, 0.9);
+}
