@@ -38,10 +38,3 @@ export const deleteTask = async (id) => {
 export const resetWeeklyTasks = async () => {
   await db.execute('UPDATE tasks SET completed=0 WHERE type="weekly"');
 };
-```
-
-Потом в терминале:
-```
-git add .
-git commit -m "update task model for turso"
-git push
