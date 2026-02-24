@@ -22,7 +22,7 @@ app.post('/api/login', (req, res) => {
   if (password !== process.env.APP_PASSWORD) {
     return res.status(401).json({ error: 'Неверный пароль' });
   }
-  const token = jwt.sign({ user: 'owner' }, process.env.SECRET_KEY, { expiresIn: '30d' });
+  const token = jwt.sign({ user: 'owner' }, process.env.SECRET_KEY, { expiresIn: '1d' });
   res.json({ token });
 });
 
