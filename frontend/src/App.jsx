@@ -101,7 +101,7 @@ function StreakBadge({ count }) {
       fontSize: 13, fontWeight: 800, color: 'white',
       boxShadow: '0 2px 8px rgba(249,115,22,0.3)', marginLeft: 8
     }}>
-      {count} {count === 1 ? 'день' : count < 5 ? 'дня' : 'дней'}
+      🔥 {count} {count === 1 ? 'день' : count < 5 ? 'дня' : 'дней'}
     </div>
   );
 }
@@ -210,14 +210,14 @@ export default function App() {
 
       {/* Задачи — вверху */}
       <div style={{ marginBottom: 28 }}>
-        <p className="section-title">📅 Задачи</p>
+        <p className="section-title">📝 Задачи</p>
         <TaskList tasks={generalTasks} fetchTasks={fetchTasks} token={getToken()} />
       </div>
 
       {/* Ежедневные */}
       <div className="progress-section">
         <div className="progress-header">
-          <p className="section-title">📅 Ежедневные</p>
+          <p className="section-title">📝 Ежедневные</p>
           <span className="progress-count">
             {dailyTasks.filter(t => t.completed).length} / {dailyTasks.length}
           </span>
