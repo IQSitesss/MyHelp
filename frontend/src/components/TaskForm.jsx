@@ -4,7 +4,7 @@ const API_URL = 'https://myhelp.onrender.com/api/tasks';
 
 export default function TaskForm({ fetchTasks, token }) {
   const [title, setTitle] = useState('');
-  const [type, setType] = useState('daily');
+  const [type, setType] = useState('task');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,12 +22,13 @@ export default function TaskForm({ fetchTasks, token }) {
 
   return (
     <form className="task-form" onSubmit={handleSubmit}>
-      <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="New task" required />
+      <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Новая задача" required />
       <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly</option>
+        <option value="task">Задача</option>
+        <option value="daily">Ежедн.</option>
+        <option value="weekly">Еженед.</option>
       </select>
-      <button type="submit">➕ Add</button>
+      <button type="submit">➕</button>
     </form>
   );
 }

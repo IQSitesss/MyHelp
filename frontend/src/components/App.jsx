@@ -192,6 +192,7 @@ export default function App() {
   }
 
   const today = new Date().toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+  const generalTasks = tasks.filter(t => t.type === 'task');
   const dailyTasks = tasks.filter(t => t.type === 'daily');
   const weeklyTasks = tasks.filter(t => t.type === 'weekly');
   const dailyProgress = dailyTasks.length === 0 ? 0 : Math.round(
@@ -211,6 +212,14 @@ export default function App() {
       </div>
 
       <TaskForm fetchTasks={fetchTasks} token={getToken()} />
+
+      {/* Обычные задачи — вверху */}
+      {generalTasks.length > 0 && (
+        <div className="weekly-section" style={{ marginTop: 0, marginBottom: 28 }}>
+          <p className="section-title">📝 Задачи</p>
+          <TaskList tasks={generalTasks} fetchTasks={fetchTasks} token={getToken()} />
+        </div>
+      )}
 
       <div className="progress-section">
         <div className="progress-header">
