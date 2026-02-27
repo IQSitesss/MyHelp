@@ -26,8 +26,8 @@ export default function TaskForm({ fetchTasks, token }) {
       <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Новая задача" required />
       <select value={type} onChange={(e) => setType(e.target.value)}>
         <option value="task">Задача</option>
-        <option value="daily">Ежедн.</option>
-        <option value="weekly">Еженед.</option>
+        <option value="daily">День</option>
+        <option value="weekly">Неделя</option>
       </select>
       <button type="submit">➕</button>
     </form>

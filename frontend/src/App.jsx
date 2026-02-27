@@ -210,7 +210,7 @@ export default function App() {
 
       {/* Задачи — вверху */}
       <div style={{ marginBottom: 28 }}>
-        <p className="section-title">📝 Задачи</p>
+        <p className="section-title">📅 Задачи</p>
         <TaskList tasks={generalTasks} fetchTasks={fetchTasks} token={getToken()} />
       </div>
 
