@@ -214,13 +214,12 @@ export default function App() {
       <TaskForm fetchTasks={fetchTasks} token={getToken()} />
 
       {/* Обычные задачи — вверху */}
-      {generalTasks.length > 0 && (
-        <div className="weekly-section" style={{ marginTop: 0, marginBottom: 28 }}>
-          <p className="section-title">📝 Задачи</p>
-          <TaskList tasks={generalTasks} fetchTasks={fetchTasks} token={getToken()} />
-        </div>
-      )}
+      <div style={{ marginBottom: 28 }}>
+        <p className="section-title">📝 Задачи</p>
+        <TaskList tasks={generalTasks} fetchTasks={fetchTasks} token={getToken()} />
+      </div>
 
+      {/* Ежедневные */}
       <div className="progress-section">
         <div className="progress-header">
           <p className="section-title">📅 Ежедневные</p>
@@ -238,6 +237,7 @@ export default function App() {
 
       <TaskList tasks={dailyTasks} fetchTasks={fetchTasks} token={getToken()} />
 
+      {/* Еженедельные */}
       <div className="weekly-section">
         <p className="section-title">📆 Еженедельные</p>
         <TaskList tasks={weeklyTasks} fetchTasks={fetchTasks} token={getToken()} />

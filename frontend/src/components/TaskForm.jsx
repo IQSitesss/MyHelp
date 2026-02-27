@@ -8,13 +8,14 @@ export default function TaskForm({ fetchTasks, token }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!title.trim()) return;
     await fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ title, type })
+      body: JSON.stringify({ title: title.trim(), type })
     });
     setTitle('');
     fetchTasks();
