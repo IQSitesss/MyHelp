@@ -5,9 +5,7 @@ import BusWidget from './components/BusWidget.jsx';
 
 const API_URL = 'https://myhelp.onrender.com/api/tasks';
 const LOGIN_URL = 'https://myhelp.onrender.com/api/login';
-const PASSWORD = import.meta.env.VITE_PASSWORD;
 
-// ---- Конфетти ----
 function Confetti({ active }) {
   const canvasRef = useRef(null);
   const animRef = useRef(null);
@@ -75,7 +73,6 @@ function Confetti({ active }) {
   );
 }
 
-// ---- Streak ----
 function getStreak() {
   try { return JSON.parse(localStorage.getItem('streak') || '{}'); }
   catch { return {}; }
@@ -104,16 +101,14 @@ function StreakBadge({ count }) {
       fontSize: 13, fontWeight: 800, color: 'white',
       boxShadow: '0 2px 8px rgba(249,115,22,0.3)', marginLeft: 8
     }}>
-      🔥 {count} {count === 1 ? 'день' : count < 5 ? 'дня' : 'дней'}
+      {count} {count === 1 ? 'день' : count < 5 ? 'дня' : 'дней'}
     </div>
   );
 }
 
-// ---- Токен ----
 function getToken() { return localStorage.getItem('token'); }
 function saveToken(t) { localStorage.setItem('token', t); }
 function clearToken() { localStorage.removeItem('token'); }
-
 function authHeaders() {
   return { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` };
 }
@@ -173,7 +168,7 @@ export default function App() {
     return (
       <div className="login-container">
         <div className="login-box">
-          <h1>👋 Привет!</h1>
+          <h1>Привет!</h1>
           <p>Введи пароль чтобы войти</p>
           <form className="login-form" onSubmit={handleLogin}>
             <input
@@ -205,7 +200,7 @@ export default function App() {
 
       <div className="app-header">
         <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
-          <h1 style={{ margin: 0 }}>Мои задачи ✨</h1>
+          <h1 style={{ margin: 0 }}>Мои задачи</h1>
           <StreakBadge count={streak.count} />
         </div>
         <p>{today}</p>
@@ -213,16 +208,16 @@ export default function App() {
 
       <TaskForm fetchTasks={fetchTasks} token={getToken()} />
 
-      {/* Обычные задачи — вверху */}
+      {/* Задачи — вверху */}
       <div style={{ marginBottom: 28 }}>
-        <p className="section-title">📝 Задачи</p>
+        <p className="section-title">Задачи</p>
         <TaskList tasks={generalTasks} fetchTasks={fetchTasks} token={getToken()} />
       </div>
 
       {/* Ежедневные */}
       <div className="progress-section">
         <div className="progress-header">
-          <p className="section-title">📅 Ежедневные</p>
+          <p className="section-title">Ежедневные</p>
           <span className="progress-count">
             {dailyTasks.filter(t => t.completed).length} / {dailyTasks.length}
           </span>
@@ -239,7 +234,7 @@ export default function App() {
 
       {/* Еженедельные */}
       <div className="weekly-section">
-        <p className="section-title">📆 Еженедельные</p>
+        <p className="section-title">Еженедельные</p>
         <TaskList tasks={weeklyTasks} fetchTasks={fetchTasks} token={getToken()} />
       </div>
 
