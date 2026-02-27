@@ -75,6 +75,10 @@ const LINE_9_BACK = {
   ]
 };
 
+function formatTime([h, m]) {
+  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
+}
+
 function getNextDepartures(schedule, now, count = 3) {
   const isWeekend = now.getDay() === 0 || now.getDay() === 6;
   const times = isWeekend ? schedule.weekend : schedule.weekday;
@@ -84,7 +88,7 @@ function getNextDepartures(schedule, now, count = 3) {
     .filter(t => t.total > cur)
     .slice(0, count)
     .map(t => ({
-      time: `${String(t.h).padStart(2,"0")}:${String(t.m).padStart(2,"0")}`,
+      time: formatTime([t.h, t.m]),
       diff: t.total - cur
     }));
 }
@@ -95,9 +99,89 @@ function formatDiff(diff) {
   return `через ${Math.floor(diff/60)}ч ${diff%60}м`;
 }
 
+// Модальное окно с полным расписанием
+function ScheduleModal({ onClose, goingBack, isWeekend, now }) {
+  const cur = now.getHours() * 60 + now.getMinutes();
+
+  const schedule120 = goingBack ? LINE_120_BACK : LINE_120_THERE;
+  const schedule9 = goingBack ? LINE_9_BACK : LINE_9_THERE;
+  const times120 = isWeekend ? schedule120.weekend : schedule120.weekday;
+  const times9 = isWeekend ? schedule9.weekend : schedule9.weekday;
+
+  const direction120 = goingBack ? "Stad. Municipal → Primaria Vulcan" : "Primaria Vulcan → Stad. Municipal";
+  const direction9 = goingBack ? "Rulmentul → Stad. Municipal" : "Stad. Municipal → Rulmentul";
+
+  return (
+    <div style={modal.overlay} onClick={onClose}>
+      <div style={modal.box} onClick={e => e.stopPropagation()}>
+        <div style={modal.header}>
+          <span style={modal.title}>📋 Полное расписание</span>
+          <button onClick={onClose} style={modal.closeBtn}>✕</button>
+        </div>
+        <div style={modal.subtitle}>
+          {isWeekend ? "Суббота · Воскресенье" : "Пн – Пт"} · {goingBack ? "← Домой" : "→ В город"}
+        </div>
+
+        <FullScheduleBlock
+          number="120"
+          color="#6366f1"
+          direction={direction120}
+          times={times120}
+          cur={cur}
+        />
+
+        <div style={modal.divider} />
+
+        <FullScheduleBlock
+          number="9"
+          color="#f472b6"
+          direction={direction9}
+          times={times9}
+          cur={cur}
+        />
+      </div>
+    </div>
+  );
+}
+
+function FullScheduleBlock({ number, color, direction, times, cur }) {
+  return (
+    <div style={{ marginBottom: 8 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+        <span style={{ ...styles.badge, background: color }}>{number}</span>
+        <span style={{ fontSize: 12, fontWeight: 700, color: "#3b3b5c" }}>{direction}</span>
+      </div>
+      <div style={modal.grid}>
+        {times.map(([h, m], i) => {
+          const total = h * 60 + m;
+          const isPast = total <= cur;
+          const isNext = !isPast && times.slice(0, i).every(([hh, mm]) => hh * 60 + mm <= cur);
+          return (
+            <div
+              key={i}
+              style={{
+                ...modal.timeCell,
+                color: isPast ? "#d1d5db" : isNext ? color : "#3b3b5c",
+                background: isNext ? color + "15" : "transparent",
+                border: isNext ? `1.5px solid ${color}40` : "1.5px solid transparent",
+                fontWeight: isNext ? 800 : isPast ? 400 : 600,
+                textDecoration: isPast ? "line-through" : "none",
+              }}
+            >
+              {formatTime([h, m])}
+              {isNext && <span style={{ fontSize: 8, marginTop: 2, color }}>▶</span>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function BusWidget() {
   const [now, setNow] = useState(new Date());
   const [goingBack, setGoingBack] = useState(false);
+  const [showSchedule, setShowSchedule] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 30000);
@@ -110,42 +194,58 @@ export default function BusWidget() {
   const next9 = getNextDepartures(goingBack ? LINE_9_BACK : LINE_9_THERE, now);
 
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <div style={styles.headerLeft}>
-          <span style={{fontSize:22}}>🚌</span>
-          <div>
-            <div style={styles.title}>Автобус</div>
-            <div style={styles.subtitle}>
-              {isWeekend ? "Суббота · Воскресенье" : "Пн · Пт"} · сейчас {timeStr}
+    <>
+      {showSchedule && (
+        <ScheduleModal
+          onClose={() => setShowSchedule(false)}
+          goingBack={goingBack}
+          isWeekend={isWeekend}
+          now={now}
+        />
+      )}
+
+      <div style={styles.container}>
+        <div style={styles.header}>
+          <div style={styles.headerLeft}>
+            <span style={{fontSize:22}}>🚌</span>
+            <div>
+              <div style={styles.title}>Автобус</div>
+              <div style={styles.subtitle}>
+                {isWeekend ? "Суббота · Воскресенье" : "Пн · Пт"} · сейчас {timeStr}
+              </div>
             </div>
           </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            <button onClick={() => setShowSchedule(true)} style={styles.scheduleBtn}>
+              📋
+            </button>
+            <button onClick={() => setGoingBack(!goingBack)} style={styles.toggleBtn}>
+              {goingBack ? "🏠 Домой" : "🏟 Туда"}
+            </button>
+          </div>
         </div>
-        <button onClick={() => setGoingBack(!goingBack)} style={styles.toggleBtn}>
-          {goingBack ? "🏠 Домой" : "🏟 Туда"}
-        </button>
+
+        <div style={styles.directionLabel}>
+          {goingBack ? "← Обратно домой" : "→ Поездка в город"}
+        </div>
+
+        <BusLine
+          number="120"
+          color="#6366f1"
+          direction={goingBack ? "Stad. Municipal → Primaria Vulcan" : "Primaria Vulcan → Stad. Municipal"}
+          departures={next120}
+        />
+
+        <div style={styles.divider} />
+
+        <BusLine
+          number="9"
+          color="#f472b6"
+          direction={goingBack ? "Rulmentul → Stad. Municipal" : "Stad. Municipal → Rulmentul"}
+          departures={next9}
+        />
       </div>
-
-      <div style={styles.directionLabel}>
-        {goingBack ? "← Обратно домой" : "→ Поездка в город"}
-      </div>
-
-      <BusLine
-        number="120"
-        color="#6366f1"
-        direction={goingBack ? "Stad. Municipal → Primaria Vulcan" : "Primaria Vulcan → Stad. Municipal"}
-        departures={next120}
-      />
-
-      <div style={styles.divider} />
-
-      <BusLine
-        number="9"
-        color="#f472b6"
-        direction={goingBack ? "Rulmentul → Stad. Municipal" : "Stad. Municipal → Rulmentul"}
-        departures={next9}
-      />
-    </div>
+    </>
   );
 }
 
@@ -197,6 +297,12 @@ const styles = {
     color: "#6366f1", cursor:"pointer",
     fontFamily: "'Nunito', sans-serif", flexShrink:0
   },
+  scheduleBtn: {
+    background: "rgba(165,180,252,0.15)",
+    border: "none", borderRadius:12,
+    padding: "6px 10px", fontSize:14,
+    cursor:"pointer", flexShrink:0
+  },
   directionLabel: { fontSize:11, fontWeight:700, color:"#a5b4fc", marginBottom:12, letterSpacing:"0.04em" },
   lineHeader: { display:"flex", alignItems:"center", gap:10, marginBottom:8 },
   badge: { color:"white", fontWeight:800, fontSize:13, borderRadius:8, padding:"3px 9px", flexShrink:0 },
@@ -208,4 +314,55 @@ const styles = {
   diffGray: { color:"#c4c9e2", fontWeight:600, fontSize:12 },
   divider: { height:1, background:"rgba(199,210,254,0.3)", margin:"12px 0" },
   noMore: { color:"#c4c9e2", fontSize:13, fontWeight:600, textAlign:"center", padding:"8px 0" }
+};
+
+const modal = {
+  overlay: {
+    position: "fixed", top:0, left:0, width:"100%", height:"100%",
+    background: "rgba(45,45,58,0.4)",
+    backdropFilter: "blur(6px)",
+    zIndex: 1000,
+    display: "flex", alignItems: "flex-end", justifyContent: "center",
+  },
+  box: {
+    background: "rgba(255,255,255,0.97)",
+    borderRadius: "24px 24px 0 0",
+    padding: "20px 20px 40px",
+    width: "100%",
+    maxWidth: 480,
+    maxHeight: "85vh",
+    overflowY: "auto",
+    fontFamily: "'Nunito', sans-serif",
+    boxShadow: "0 -8px 40px rgba(149,157,220,0.25)",
+  },
+  header: {
+    display: "flex", alignItems: "center", justifyContent: "space-between",
+    marginBottom: 4,
+  },
+  title: { fontSize:16, fontWeight:800, color:"#3b3b5c" },
+  subtitle: { fontSize:12, color:"#9ca3af", fontWeight:600, marginBottom:16 },
+  closeBtn: {
+    background: "rgba(199,210,254,0.3)",
+    border: "none", borderRadius:10,
+    width:32, height:32,
+    fontSize:14, cursor:"pointer",
+    display:"flex", alignItems:"center", justifyContent:"center",
+    color:"#9ca3af", fontWeight:700,
+  },
+  divider: { height:1, background:"rgba(199,210,254,0.4)", margin:"16px 0" },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: 6,
+  },
+  timeCell: {
+    padding: "6px 4px",
+    borderRadius: 10,
+    fontSize: 13,
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    transition: "all 0.15s",
+  }
 };
